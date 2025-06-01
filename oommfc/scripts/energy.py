@@ -196,8 +196,8 @@ def zeeman_script(term, system):
             mif += f"proc TimeFunction:{term.name} {{ total_time }} {{\n"
             mif += f"  set tstep {term.dt}\n"
             mif += "  set index [expr round($total_time/$tstep)]\n"
-            mif += f"  set H_t_fac {{ {' '.join(map(str, term.tlist))} }}\n"
-            mif += f"  set dH_t_fac {{ {' '.join(map(str, term.dtlist))} }}\n"
+            mif += f'  set H_t_fac {{ {" ".join(map(str, term.tlist))} }}\n'
+            mif += f'  set dH_t_fac {{ {" ".join(map(str, term.dtlist))} }}\n'
             mif += "  set H_fac [lindex $H_t_fac $index]\n"
             mif += "  set dH_fac [lindex $dH_t_fac $index]\n"
             mif += f"  set Hx [expr {{ {term.H[0]}*$H_fac }}]\n"
@@ -216,9 +216,9 @@ def zeeman_script(term, system):
             mif += "}\n\n"
     elif isinstance(term.tcl_strings, dict):
         mif += term.tcl_strings["script"]
-        mif += f"\n# {term.tcl_strings['energy'][4:]}\n"  # 3.9 removeprefix
-        mif += f"Specify {term.tcl_strings['energy']}:{term.name} {{\n"
-        mif += f"  script {term.tcl_strings['script_name']}\n"
+        mif += f'\n# {term.tcl_strings["energy"][4:]}\n'  # 3.9 removeprefix
+        mif += f'Specify {term.tcl_strings["energy"]}:{term.name} {{\n'
+        mif += f'  script {term.tcl_strings["script_name"]}\n'
         for key in ["type", "script_args"]:
             with contextlib.suppress(KeyError):
                 mif += f"  {key} {term.tcl_strings[key]}\n"
@@ -257,6 +257,39 @@ def demag_script(term, system):
 
 
 def dmi_script(term, system):
+    # return old_dmi_script(term, system)
+
+    if term.crystalclass in ["T", "O"]:
+        oxs = "Oxs_DMI_T"
+    elif (tcc := term.crystalclass) in ["D2d_x", "D2d_y", "D2d_z", "D2d"]:
+        if tcc == "D2d":
+            warnings.warn(
+                "Use of `D2d` is deprecated; use `D2d_z` instead.",
+                FutureWarning,
+                stacklevel=2,
+            )
+            tcc = "D2d_z"
+        oxs = f"Oxs_DMI_{tcc}"
+    elif (tcc := term.crystalclass) in ["Cnv_x", "Cnv_y", "Cnv_z", "Cnv"]:
+        if tcc == "Cnv":
+            msg = "Use of `Cnv` is deprecated; use `Cnv_z` instead."
+            warnings.warn(msg, FutureWarning, stacklevel=2)
+            tcc = "Cnv_z"
+        oxs = f"Oxs_DMI_{tcc}"
+
+    def_start = f"# DMI of crystallographic class {term.crystalclass}\n"
+    def_start += f"Specify {oxs}:{term.name} {{\n"
+    dmif, dname = oc.scripts.setup_scalar_parameter(term.D, f"{term.name}_D")
+    mif = ""
+    mif += dmif
+    mif += def_start
+    mif += f"  D {dname}\n"
+    mif += "}\n\n"
+
+    return mif
+
+# in case of an error with the new one, old still can be used
+def old_dmi_script(term, system):
     if term.crystalclass in ["T", "O"]:
         oxs = "Oxs_DMI_T"
     elif (tcc := term.crystalclass) in ["D2d_x", "D2d_y", "D2d_z", "D2d"]:
@@ -305,6 +338,7 @@ def dmi_script(term, system):
         mif += "}\n\n"
 
     return mif
+
 
 
 def uniaxialanisotropy_script(term, system):

@@ -77,7 +77,7 @@ def vector_norm_scalar_field(field, name):
 
 def setup_scalar_parameter(parameter, name):
     if isinstance(parameter, df.Field):
-        parameter.to_file(f"{name}.ovf", extend_scalar=True)
+        parameter.to_file(f"{name}.ovf")
         mif = file_vector_field(f"{name}.ovf", f"{name}", "main_atlas")
         mif += vector_norm_scalar_field(f"{name}", f"{name}_norm")
         return mif, f"{name}_norm"

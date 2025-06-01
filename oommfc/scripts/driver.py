@@ -23,7 +23,7 @@ def driver_script(
 
         # Fixed spins
         if fixed_subregions is not None:
-            resstr = f"{{main_atlas {' '.join(fixed_subregions)}}}"
+            resstr = f'{{main_atlas {" ".join(fixed_subregions)}}}'
             driver.evolver.fixed_spins = resstr
 
         mif += oc.scripts.evolver_script(driver.evolver)
@@ -70,11 +70,11 @@ def driver_script(
 
         # Fixed spins
         if fixed_subregions is not None:
-            resstr = f"{{main_atlas {' '.join(fixed_subregions)}}}"
+            resstr = f'{{main_atlas {" ".join(fixed_subregions)}}}'
             driver.evolver.fixed_spins = resstr
 
         # What is saved in output?
-        output_str = "Step" if output_step else "Stage"
+        output_str = f"Step {kwargs['steps'] if 'steps' in kwargs else 25}" if output_step else "Stage 1"
 
         mif += oc.scripts.evolver_script(driver.evolver)
 
@@ -93,8 +93,8 @@ def driver_script(
         # Saving results.
         mif += "Destination table mmArchive\n"
         mif += "Destination mags mmArchive\n\n"
-        mif += f"Schedule DataTable table {output_str} 1\n"
-        mif += f"Schedule Oxs_MinDriver::Magnetization mags {output_str} 1"
+        mif += f"Schedule DataTable table {output_str}\n"
+        mif += f"Schedule Oxs_MinDriver::Magnetization mags {output_str}"
 
     if isinstance(driver, oc.TimeDriver):
         # Check evolver and set default if not passed.
@@ -177,7 +177,7 @@ def driver_script(
 
         # Fixed spins
         if fixed_subregions is not None:
-            resstr = f"{{main_atlas {' '.join(fixed_subregions)}}}"
+            resstr = f'{{main_atlas {" ".join(fixed_subregions)}}}'
             driver.evolver.fixed_spins = resstr
 
         mif += oc.scripts.evolver_script(driver.evolver, **kwargs)
@@ -192,19 +192,21 @@ def driver_script(
         mif += "  mesh :mesh\n"
         mif += "  Ms :m0_norm\n"
         mif += "  m0 :m0\n"
-        mif += f"  stopping_time {t / n}\n"
+        mif += f"  stopping_time {t/n}\n"
         mif += f"  stage_count {n}\n"
         for attr, value in driver:
             if attr != "evolver":
                 mif += f"  {attr} {value}\n"
         mif += "}\n\n"
 
+        output_str = f"Step {kwargs['steps'] if 'steps' in kwargs else 25}" if output_step else "Stage 1"
+
         # Saving results
         mif += "Destination table mmArchive\n"
         mif += "Destination mags mmArchive\n"
         mif += "Destination archive mmArchive\n\n"
-        mif += "Schedule DataTable table Stage 1\n"
-        mif += "Schedule Oxs_TimeDriver::Magnetization mags Stage 1\n"
+        mif += f"Schedule DataTable table {output_str}\n"
+        mif += f"Schedule Oxs_TimeDriver::Magnetization mags {output_str}\n"
 
         if compute is not None:
             mif += compute
