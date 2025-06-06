@@ -1,6 +1,6 @@
 # oommfc
 
-Fork of Ubermag with support for [DMI field OOMMF modificatoin](https://github.com/nazar-si/oommf). Modified files are [scripts/driver.py](./oommfc/scripts/driver.py) for `steps: int` argument for driver to save only required number of steps while `output_step=True`. Also modifications are made to the [scripts/energy.py](./oommfc/scripts/energy.py) for the enhanced support of the DMI field extension to support passing DMI as a field based on [Cnv extension](https://github.com/nazar-si/oommf/blob/master/oommf/app/oxs/local/oommf-extension-dmi-cnv/DMI_Cnv_z.cc).
+Fork of Ubermag with support for [DMI field OOMMF modificatoin](https://github.com/nazar-si/oommf). Modified files are [scripts/driver.py](./oommfc/scripts/driver.py) for `steps: int` argument for driver to save only required number of steps while `output_step=True`. Also modifications are made to the [scripts/energy.py](./oommfc/scripts/energy.py) for an enhanced support of the DMI field extension, which allows for passing DMI value as a field. Modified [Cnv_z script](https://github.com/nazar-si/oommf/blob/master/oommf/app/oxs/local/oommf-extension-dmi-cnv/DMI_Cnv_z.cc).
 
 ## Installation:
 ```sh
