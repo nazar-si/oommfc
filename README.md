@@ -1,5 +1,19 @@
 # oommfc
 
+Fork of Ubermag with support for [DMI field OOMMF modificatoin](https://github.com/nazar-si/oommf). Modified files are [scripts/driver.py](./oommfc/scripts/driver.py) for `steps: int` argument for driver to save only required number of steps while `output_step=True`. Also modifications are made to the [scripts/energy.py](./oommfc/scripts/energy.py) for the enhanced support of the DMI field extension to support passing DMI as a field based on [Cnv extension](https://github.com/nazar-si/oommf/blob/master/oommf/app/oxs/local/oommf-extension-dmi-cnv/DMI_Cnv_z.cc).
+
+## Installation:
+```sh
+git clone https://github.com/nazar-si/oommfc.git oommfc-modified
+pip install -e ./oommfc-modified
+```
+or download this repo into desired directory and inside the main folder run:
+```sh
+pip install -e .
+```
+
+## On original authors
+
 [Marijan Beg](https://github.com/marijanbeg)<sup>1,2</sup>, [Martin Lang](https://github.com/lang-m)<sup>2</sup>, [Ryan A. Pepper](https://github.com/rpep)<sup>3</sup>, [Thomas Kluyver](https://github.com/takluyver)<sup>4</sup>, [Samuel Holt](https://github.com/samjrholt)<sup>2,5</sup>, [Swapneel Amit Pathak](https://github.com/swapneelap)<sup>2,6</sup>, and [Hans Fangohr](https://github.com/fangohr)<sup>2,6,7</sup>
 
 <sup>1</sup> *Department of Earth Science and Engineering, Imperial College London, London SW7 2AZ, UK*  

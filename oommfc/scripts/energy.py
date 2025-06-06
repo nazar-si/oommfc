@@ -279,7 +279,7 @@ def dmi_script(term, system):
 
     def_start = f"# DMI of crystallographic class {term.crystalclass}\n"
     def_start += f"Specify {oxs}:{term.name} {{\n"
-    dmif, dname = oc.scripts.setup_scalar_parameter(term.D, f"{term.name}_D")
+    dmif, dname = oc.scripts.setup_vector_parameter(term.D, f"{term.name}_D")
     mif = ""
     mif += dmif
     mif += def_start
